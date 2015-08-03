@@ -25,7 +25,7 @@
           <a class="brand" href="rc-uploads.php">Newbie uploads</a>
           <div class="nav-collapse collapse">
                 <ul id="toolbar-right" class="nav pull-right">
-               <li><a href="rc-uploads.php?files=0&editcount=1&about=true">About</a></li>
+               <li><a href="index.php?files=0&editcount=1&about=true">About</a></li>
                </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -81,7 +81,7 @@ echo "<p>Recent $num uploads by users not in <a href=\"//commons.wikimedia.org/w
 echo <<<EOD
 <br>
 <div class="well form-submit">
-<form action="rc-uploads.php">
+<form action="index.php">
 <label for="files"><b>Files:</b></label><select id="files" name="files">
 <option value="$num" selected="">$num</option>
 <option value="60">60</option>
