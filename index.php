@@ -174,6 +174,7 @@ echo "<b>Klicks:</b> ";
 include( "new.txt" );
 echo " since Juli 2015.<br>";
 echo "<b>Version:</b> <span class=\"badge badge-success\">2.0</span><br>";
+echo "<b>Source:</b> <a href=\"https://github.com/Toollabs/newbie-uploads/\">GitHub</a>";
 }
 ?>
 </div>
