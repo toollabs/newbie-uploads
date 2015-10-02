@@ -22,7 +22,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="rc-uploads.php">Newbie uploads</a>
+          <a class="brand" href="index.php">Newbie uploads</a>
           <div class="nav-collapse collapse">
                 <ul id="toolbar-right" class="nav pull-right">
                <li><a href="index.php?files=0&editcount=1&about=true">About</a></li>
