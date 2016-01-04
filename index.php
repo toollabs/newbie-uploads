@@ -10,7 +10,7 @@
 <head>
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
         <title>Newbie uploads</title>
-        <link rel="stylesheet" href="/steinsplitter/bootstrap.css">
+        <link rel="stylesheet" href="//tools-static.wmflabs.org/cdnjs/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css">
     <style>
       body {
         padding-top: 60px;
