@@ -79,7 +79,6 @@ if ( is_numeric( $edget ) ) {
 
 echo "<p>Recent $num uploads by users not in <a href=\"//commons.wikimedia.org/wiki/Special:ListGroupRights\">local usergroups</a> (Example: autopatroller, bot) and less than $enum edits.";
 echo <<<EOD
-{echo "help";}
 <br>
 <div class="well form-submit">
 <form action="index.php">
