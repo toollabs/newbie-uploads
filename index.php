@@ -79,6 +79,7 @@ if ( is_numeric( $edget ) ) {
 
 echo "<p>Recent $num uploads by users not in <a href=\"//commons.wikimedia.org/wiki/Special:ListGroupRights\">local usergroups</a> (Example: autopatroller, bot) and less than $enum edits.";
 echo <<<EOD
+{echo "help";}
 <br>
 <div class="well form-submit">
 <form action="index.php">
@@ -102,7 +103,16 @@ echo <<<EOD
 <option value="1500">1500</option>
 <option value="3000">3000</option>
 <option value="5000">5000</option>
-</select><br>
+</select>
+<label for="filter"><b>Filter:</b></label><select id="filter" name="filter">
+<option value="0" selected="" > </option>
+<option value="1">hide patrolled</option>
+<option value="2">hide non-patrolled</option>
+<option value="3">only .webm</option>
+<option value="5">only .svg</option>
+<option value="4">logos only</option>
+</select>
+<br>
 <input class ="btn btn-primary btn-success" type="submit" value="Go" /></td></tr></table>
 </form>
 </div>
@@ -148,22 +158,59 @@ if ( $enum < 333000 ) {
      $qer = "0";
 }
 
+if($_GET["filter"] == "1") {
+$isp = "AND rc_patrolled = \"0\"";
+}
+elseif($_GET["filter"] == "2") {
+$isp = "AND rc_patrolled = \"1\"";
+}
+elseif($_GET["filter"] == "3") {
+$isp = "AND rc_title LIKE \"%.webm\"";
+}
+elseif($_GET["filter"] == "4") {
+$isp = "AND rc_title LIKE \"%logo%\"";
+}
+elseif($_GET["filter"] == "5") {
+$isp = "AND rc_title LIKE \".svg%\"";
+}
+else {
+$isp = "";
+}
+
 $tools_pw = posix_getpwuid ( posix_getuid () );
 $tools_mycnf = parse_ini_file( $tools_pw['dir'] . "/replica.my.cnf" );
 $db = new mysqli( 'commonswiki.labsdb', $tools_mycnf['user'], $tools_mycnf['password'], 'commonswiki_p' );
 if ( $db->connect_errno )
         die( "Failed to connect to labsdb: (" . $db->connect_errno . ") " . $db->connect_error );
-$r = $db->query( 'SELECT DATE_FORMAT(rc_timestamp, "%b %d %Y %h:%i %p") AS timestamp, rc_title AS file, rc_user_text as user, user_editcount as editcount, rc_log_action FROM recentchanges LEFT JOIN user_groups ON rc_user=ug_user INNER JOIN user ON rc_user=user_id WHERE ug_group IS NULL AND rc_log_type = "upload" AND user_editcount < "' . $eqer . '" ORDER BY rc_timestamp DESC LIMIT ' . $qer . ';' );
+$r = $db->query( 'SELECT DATE_FORMAT(rc_timestamp, "%b %d %Y %h:%i %p") AS timestamp,
+rc_title AS file,
+rc_user_text as user,
+user_editcount as editcount,
+rc_log_action,
+rc_patrolled
+FROM recentchanges
+LEFT JOIN user_groups ON rc_user=ug_user
+INNER JOIN user ON rc_user=user_id
+WHERE ug_group IS NULL ' . $isp . '
+AND rc_log_type = "upload"
+AND user_editcount < "' . $eqer . '"
+ORDER BY rc_timestamp DESC
+LIMIT ' . $qer . ';' );
 unset( $tools_mycnf, $tools_pw );
 ?>
 <table class="table table-hover">
 <?php while ( $row = $r->fetch_row() ):
 $word =  str_replace( "overwrite", "overwritten", htmlspecialchars( $row[4] ) );
 $word2 =  str_replace( "upload", "uploaded", $word );
+if ($row[5] == "0") {
+   $pt = "<abbr title=\"This upload has not yet been patrolled\">!</abbr>";
+} else {
+   $pt = "";
+}
 ?>
 <tr><td>
 <p><img class="decoded" src="//commons.wikimedia.org/w/thumb.php?f=<?= htmlspecialchars( urlencode ( $row[1] ) ) ?>&amp;w=80&amp;p=40"></p></td> <td>
-<p><a href="//commons.wikimedia.org/wiki/File:<?= htmlspecialchars ( urlencode ( $row[1] ) ) ?>">File:<?= str_replace( "_", " ", htmlspecialchars( $row[1] ) ); ?></a> <?= $word2; ?> by <a href="//commons.wikimedia.org/wiki/User:<?= htmlspecialchars( $row[2] ) ?>"><?= htmlspecialchars( $row[2] ) ?></a> (Editcount: <?= htmlspecialchars( $row[3] ) ?>) at <?= htmlspecialchars( $row[0] ) ?>.</p>
+<p><?= $pt ?> <a href="//commons.wikimedia.org/wiki/File:<?= htmlspecialchars ( urlencode ( $row[1] ) ) ?>">File:<?= str_replace( "_", " ", htmlspecialchars( $row[1] ) ); ?></a> <?= $word2; ?> by <a href="//commons.wikimedia.org/wiki/User:<?= htmlspecialchars( $row[2] ) ?>"><?= htmlspecialchars( $row[2] ) ?></a> (Editcount: <?= htmlspecialchars( $row[3] ) ?>) at <?= htmlspecialchars( $row[0] ) ?>.</p>
 </td></tr>
 <?php endwhile; ?>
 </table>
