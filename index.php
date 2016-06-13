@@ -173,7 +173,7 @@ echo "<b>About:</b> This tool is intended to help users find newbie uploads. A l
 echo "<b>Klicks:</b> ";
 include( "new.txt" );
 echo " since Juli 2015.<br>";
-echo "<b>Version:</b> <span class=\"badge badge-success\">2.0</span><br>";
+echo "<b>Version:</b> <span class=\"badge badge-success\">2.5</span><br>";
 echo "<b>Source:</b> <a href=\"https://github.com/Toollabs/newbie-uploads/\">GitHub</a>";
 }
 ?>
@@ -181,4 +181,3 @@ echo "<b>Source:</b> <a href=\"https://github.com/Toollabs/newbie-uploads/\">Git
 </div>
 </body>
 </html>
-
