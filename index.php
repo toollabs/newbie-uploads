@@ -89,7 +89,7 @@ echo <<<EOD
 <br>
 <div class="well form-submit">
 <form action="index.php">
-<label for="files"><b><p tt="files">Files:</p></label><select id="files" name="files">
+<label for="files"><b><p tt="files">Files:</p></b></label><select id="files" name="files">
 <option value="$num" selected="">$num</option>
 <option value="60">60</option>
 <option value="120">120</option>
