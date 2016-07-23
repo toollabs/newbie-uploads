@@ -11,9 +11,11 @@
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
         <title>Newbie uploads</title>
         <link rel="stylesheet" href="//tools-static.wmflabs.org/cdnjs/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css">
+        <script src="//tools-static.wmflabs.org/tooltranslate/tt.js"></script>
+        <script src="//tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <style>
       body {
-        padding-top: 60px;
+        padding-top: 62px;
       }
     </style>
 </head>
@@ -22,19 +24,24 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="index.php">Newbie uploads</a>
+          <a class="brand" href="index.php"><span tt="nu">Newbie uploads</span></a>
           <div class="nav-collapse collapse">
-                <ul id="toolbar-right" class="nav pull-right">
-               <li><a href="index.php?files=0&editcount=1&about=true">About</a></li>
-               </ul>
+            <div class="navbar-form pull-right">
+               <span class = "i18ntools"><span id='tooltranslate_wrapper'></span></span>
+                <a href="index.php?files=0&editcount=1&about=true"><span tt="about">About</span></a>
+            </div>
           </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
 
   <div class="container">
-
 <?php
+// i18n
+require_once ( "/data/project/tooltranslate/public_html/tt.php") ;
+$tt = new ToolTranslation ( array ( 'tool' => 'newbie_uploads' , 'language' => 'en' , 'fallback' => 'en' , 'highlight_missing' => false ) ) ;
+print $tt->getJS('#tooltranslate_wrapper') ;
+print $tt->getJS() ;
 // Logging access
 $hi = ( "new.txt" );
 $hii = file( $hi );
@@ -77,12 +84,12 @@ if ( is_numeric( $edget ) ) {
     $enum = "???";
 }
 
-echo "<p>Recent $num uploads by users not in <a href=\"//commons.wikimedia.org/wiki/Special:ListGroupRights\">local usergroups</a> (Example: autopatroller, bot) and less than $enum edits.";
+echo "<p tt=\"intro\">Recent $num uploads by users not in <a href=\"//commons.wikimedia.org/wiki/Special:ListGroupRights\">local usergroups</a> (Example: autopatroller, bot) and less than $enum edits.";
 echo <<<EOD
 <br>
 <div class="well form-submit">
 <form action="index.php">
-<label for="files"><b>Files:</b></label><select id="files" name="files">
+<label for="files"><b><p tt="files">Files:</p></label><select id="files" name="files">
 <option value="$num" selected="">$num</option>
 <option value="60">60</option>
 <option value="120">120</option>
@@ -91,7 +98,7 @@ echo <<<EOD
 <option value="1200">1200</option>
 <option value="2000">2000</option>
 </select>
-<label for="editcount"><b>Less edits than:</b></label><select id="editcount" name="editcount">
+<label for="editcount"><b><p tt="let">Less edits than:</p></b></label><select id="editcount" name="editcount">
 <option value="$enum" selected="">$enum</option>
 <option value="1">1</option>
 <option value="5">5</option>
@@ -103,22 +110,20 @@ echo <<<EOD
 <option value="3000">3000</option>
 <option value="5000">5000</option>
 </select>
-<label for="filter"><b>Filter:</b></label><select id="filter" name="filter">
+<label for="filter"><b><p tt="filter">Filter:</p></b></label><select id="filter" name="filter">
 <option value="0" selected="" > </option>
-<option value="1">hide patrolled</option>
-<option value="2">hide non-patrolled</option>
-<option value="3">only .webm</option>
-<option value="5">only .svg</option>
-<option value="4">logos only</option>
+<option value="1" tt= "hp">hide patrolled</option>
+<option value="2" tt= "hnp">hide non-patrolled</option>
+<option value="3" tt= "webm">only .webm</option>
+<option value="5" tt= "svg">only .svg</option>
+<option value="4" tt= "logos">logos only</option>
 </select>
 <br>
-<input class ="btn btn-primary btn-success" type="submit" value="Go" /></td></tr></table>
+<input class ="btn btn-primary btn-success" type="submit" tt="go" value="Go" /></td></tr></table>
 </form>
 </div>
 EOD;
-?>
 
-<?php
 // Checking file parameter
 $dget = $_GET['files'];
 
@@ -180,7 +185,7 @@ $tools_pw = posix_getpwuid ( posix_getuid () );
 $tools_mycnf = parse_ini_file( $tools_pw['dir'] . "/replica.my.cnf" );
 $db = new mysqli( 'commonswiki.labsdb', $tools_mycnf['user'], $tools_mycnf['password'], 'commonswiki_p' );
 if ( $db->connect_errno )
-        die( "Failed to connect to labsdb: (" . $db->connect_errno . ") " . $db->connect_error );
+        die( "<div tt= \"dberror\">Failed to connect to labsdb:</div> (" . $db->connect_errno . ") " . $db->connect_error );
 $r = $db->query( 'SELECT DATE_FORMAT(rc_timestamp, "%b %d %Y %h:%i %p") AS timestamp,
 rc_title AS file,
 rc_user_text as user,
@@ -199,28 +204,28 @@ unset( $tools_mycnf, $tools_pw );
 ?>
 <table class="table table-hover">
 <?php while ( $row = $r->fetch_row() ):
-$word =  str_replace( "overwrite", "overwritten", htmlspecialchars( $row[4] ) );
-$word2 =  str_replace( "upload", "uploaded", $word );
+$word =  str_replace( "overwrite", "<span tt=\"filesover\">overwritten</span>", htmlspecialchars( $row[4] ) );
+$word2 =  str_replace( "upload", "<span tt=\"filesup\">uploaded</span>", $word );
 if ($row[5] == "0") {
-   $pt = "<abbr title=\"This upload has not yet been patrolled\">!</abbr>";
+   $pt = "<span tt=\"unpatrolled\"><abbr title=\"This upload has not yet been patrolled\">!</abbr></span>";
 } else {
    $pt = "";
 }
 ?>
 <tr><td>
 <p><img class="decoded" src="//commons.wikimedia.org/w/thumb.php?f=<?= htmlspecialchars( urlencode ( $row[1] ) ) ?>&amp;w=80&amp;p=40"></p></td> <td>
-<p><?= $pt ?> <a href="//commons.wikimedia.org/wiki/File:<?= htmlspecialchars ( urlencode ( $row[1] ) ) ?>">File:<?= str_replace( "_", " ", htmlspecialchars( $row[1] ) ); ?></a> <?= $word2; ?> by <a href="//commons.wikimedia.org/wiki/User:<?= htmlspecialchars( $row[2] ) ?>"><?= htmlspecialchars( $row[2] ) ?></a> (Editcount: <?= htmlspecialchars( $row[3] ) ?>) at <?= htmlspecialchars( $row[0] ) ?>.</p>
+<p><?= $pt ?> <a href="//commons.wikimedia.org/wiki/File:<?= htmlspecialchars ( urlencode ( $row[1] ) ) ?>">File:<?= str_replace( "_", " ", htmlspecialchars( $row[1] ) ); ?></a> <?= $word2; ?> by <a href="//commons.wikimedia.org/wiki/User:<?= htmlspecialchars( $row[2] ) ?>"><?= htmlspecialchars( $row[2] ) ?></a> (<span tt="editcount">Editcount:</span> <?= htmlspecialchars( $row[3] ) ?>) <span tt="at">at</span> <?= htmlspecialchars( $row[0] ) ?>.</p>
 </td></tr>
 <?php endwhile; ?>
 </table>
 <?php
 if ( isset( $_GET['about'] ) ) {
-echo "<b>About:</b> This tool is intended to help users find newbie uploads. A lot of newbies are not familiar with Commons' policies and therefore sometimes upload copyvios and other content violating Commons' policies. (Special:NewFiles does not allow such filtering.)<br>";
-echo "<b>Klicks:</b> ";
+echo "<b><div tt=\"about\">About:</div></b> <div tt=\"about2\">This tool is intended to help users find newbie uploads. A lot of newbies are not familiar with Commons' policies and therefore sometimes upload copyvios and other content violating Commons' policies. (Special:NewFiles does not allow such filtering.)</div><br>";
+echo "<b><div tt=\"klicks\">Klicks:</div></b> ";
 include( "new.txt" );
-echo " since Juli 2015.<br>";
-echo "<b>Version:</b> <span class=\"badge badge-success\">2.5</span><br>";
-echo "<b>Source:</b> <a href=\"https://github.com/Toollabs/newbie-uploads/\">GitHub</a>";
+echo " <div tt=\"snc\">since Juli 2015.</div><br>";
+echo "<b><div tt=\"version\">Version:</div></b> <span class=\"badge badge-success\">2.5</span><br>";
+echo "<b><div tt=\"source\">Source:</div></b> <a href=\"https://github.com/Toollabs/newbie-uploads/\">GitHub</a>";
 }
 ?>
 </div>
