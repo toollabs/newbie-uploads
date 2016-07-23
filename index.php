@@ -214,18 +214,18 @@ if ($row[5] == "0") {
 ?>
 <tr><td>
 <p><img class="decoded" src="//commons.wikimedia.org/w/thumb.php?f=<?= htmlspecialchars( urlencode ( $row[1] ) ) ?>&amp;w=80&amp;p=40"></p></td> <td>
-<p><?= $pt ?> <a href="//commons.wikimedia.org/wiki/File:<?= htmlspecialchars ( urlencode ( $row[1] ) ) ?>">File:<?= str_replace( "_", " ", htmlspecialchars( $row[1] ) ); ?></a> <?= $word2; ?> by <a href="//commons.wikimedia.org/wiki/User:<?= htmlspecialchars( $row[2] ) ?>"><?= htmlspecialchars( $row[2] ) ?></a> (<span tt="editcount">Editcount:</span> <?= htmlspecialchars( $row[3] ) ?>) <span tt="at">at</span> <?= htmlspecialchars( $row[0] ) ?>.</p>
+<p><?= $pt ?> <a href="//commons.wikimedia.org/wiki/File:<?= htmlspecialchars ( urlencode ( $row[1] ) ) ?>">File:<?= str_replace( "_", " ", htmlspecialchars( $row[1] ) ); ?></a> <?= $word2; ?> <span tt="by">by</span> <a href="//commons.wikimedia.org/wiki/User:<?= htmlspecialchars( $row[2] ) ?>"><?= htmlspecialchars( $row[2] ) ?></a> (<span tt="editcount">Editcount:</span> <?= htmlspecialchars( $row[3] ) ?>) <span tt="at">at</span> <?= htmlspecialchars( $row[0] ) ?>.</p>
 </td></tr>
 <?php endwhile; ?>
 </table>
 <?php
 if ( isset( $_GET['about'] ) ) {
-echo "<b><div tt=\"about\">About:</div></b> <div tt=\"about2\">This tool is intended to help users find newbie uploads. A lot of newbies are not familiar with Commons' policies and therefore sometimes upload copyvios and other content violating Commons' policies. (Special:NewFiles does not allow such filtering.)</div><br>";
-echo "<b><div tt=\"klicks\">Klicks:</div></b> ";
+echo "<b><span tt=\"about\">About:</span></b> <div tt=\"about2\">This tool is intended to help users find newbie uploads. A lot of newbies are not familiar with Commons' policies and therefore sometimes upload copyvios and other content violating Commons' policies. (Special:NewFiles does not allow such filtering.)</div><br>";
+echo "<b><span tt=\"klicks\">Klicks:</span></b> ";
 include( "new.txt" );
-echo " <div tt=\"snc\">since Juli 2015.</div><br>";
-echo "<b><div tt=\"version\">Version:</div></b> <span class=\"badge badge-success\">2.5</span><br>";
-echo "<b><div tt=\"source\">Source:</div></b> <a href=\"https://github.com/Toollabs/newbie-uploads/\">GitHub</a>";
+echo " <span tt=\"snc\">since Juli 2015.</span><br>";
+echo "<b><span tt=\"version\">Version:</span></b> <span class=\"badge badge-success\">2.5</span><br>";
+echo "<b><span tt=\"source\">Source:</span></b> <a href=\"https://github.com/Toollabs/newbie-uploads/\">GitHub</a>";
 }
 ?>
 </div>
