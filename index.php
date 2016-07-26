@@ -18,6 +18,11 @@
         padding-top: 62px;
       }
     </style>
+<script language='javascript' type='text/javascript'>
+     $(window).load(function() {
+      $('#loooaaad').hide();
+  });
+</script>
 </head>
 <body>
 
@@ -36,6 +41,7 @@
     </div>
 
   <div class="container">
+<div id ="loooaaad"><div class="hero-unit"><img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Ajax-loader.gif"></img> <span tt="lc">Loading content...</span></div><br></div>
 <?php
 // i18n
 require_once ( "/data/project/tooltranslate/public_html/tt.php") ;
