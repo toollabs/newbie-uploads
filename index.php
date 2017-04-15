@@ -219,7 +219,7 @@ if ($row[5] == "0") {
 }
 ?>
 <tr><td>
-<p><img class="decoded" src="//commons.wikimedia.org/w/thumb.php?f=<?= htmlspecialchars( urlencode ( $row[1] ) ) ?>&amp;w=80&amp;p=40"></p></td> <td>
+<p><img class="decoded" onerror="this.style.display = 'none'" src="//commons.wikimedia.org/w/thumb.php?f=<?= htmlspecialchars( urlencode ( $row[1] ) ) ?>&amp;w=80&amp;p=40"></p></td> <td>
 <p><?= $pt ?> <a href="//commons.wikimedia.org/wiki/File:<?= htmlspecialchars ( urlencode ( $row[1] ) ) ?>">File:<?= str_replace( "_", " ", htmlspecialchars( $row[1] ) ); ?></a> <?= $word2; ?> <span tt="by">by</span> <a href="//commons.wikimedia.org/wiki/User:<?= htmlspecialchars( $row[2] ) ?>"><?= htmlspecialchars( $row[2] ) ?></a> (<span tt="editcount">Editcount:</span> <?= htmlspecialchars( $row[3] ) ?>) <span tt="at">at</span> <?= htmlspecialchars( $row[0] ) ?>.</p>
 </td></tr>
 <?php endwhile; ?>
