@@ -194,13 +194,14 @@ if ( $db->connect_errno )
         die( "<div tt= \"dberror\">Failed to connect to labsdb:</div> (" . $db->connect_errno . ") " . $db->connect_error );
 $r = $db->query( 'SELECT DATE_FORMAT(rc_timestamp, "%b %d %Y %h:%i %p") AS timestamp,
 rc_title AS file,
-rc_user_text as user,
+actor_name as user,
 user_editcount as editcount,
 rc_log_action,
 rc_patrolled
 FROM recentchanges
 LEFT JOIN user_groups ON rc_user=ug_user
-INNER JOIN user ON rc_user=user_id
+INNER JOIN actor ON rc_actor = actor_id
+INNER JOIN user ON actor_user=user_id
 WHERE ug_group IS NULL ' . $isp . '
 AND rc_log_type = "upload"
 AND user_editcount < "' . $eqer . '"
