@@ -22,6 +22,9 @@
      $(window).load(function() {
       $('#loooaaad').hide();
   });
+     $(document).on("click", "#sendreq1", function() {
+     $('#spinner').show();
+     });
 </script>
 </head>
 <body>
@@ -125,7 +128,7 @@ echo <<<EOD
 <option value="4" tt= "logos">logos only</option>
 </select>
 <br>
-<input class ="btn btn-primary btn-success" type="submit" tt="go" value="Go" /></td></tr></table>
+<button class ="btn btn-primary btn-success sendreq1" id="sendreq1'" type="submit" tt="go" value="Go"></button><span id='spinner' style='display:none;'><img src='https://upload.wikimedia.org/wikipedia/commons/7/78/24px-spinner-0645ad.gif'/ ></span></td></tr></table>
 </form>
 </div>
 EOD;
